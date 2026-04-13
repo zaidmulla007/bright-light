@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { useLang } from "@/app/context/LanguageContext";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import ProductSidebar from "@/app/components/ProductSidebar";
@@ -21,8 +22,8 @@ export default function ProductClient({
   if (!result) return notFound();
 
   const { brand, category, product } = result;
-
   const related = category.subs.filter((s) => s.slug !== productSlug);
+  const { t } = useLang();
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -31,9 +32,9 @@ export default function ProductClient({
       <section className="bg-gradient-to-br from-[#8B0000] via-accent to-[#8B0000] py-6 sm:py-8 md:py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-2 text-white/60 text-[10px] sm:text-xs md:text-sm flex-wrap">
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <Link href="/" className="hover:text-white transition-colors">{t.nav.home}</Link>
             <ChevronSvg />
-            <Link href="/products" className="hover:text-white transition-colors">Products</Link>
+            <Link href="/products" className="hover:text-white transition-colors">{t.nav.products}</Link>
             <ChevronSvg />
             <Link href={`/products/${brand.slug}`} className="hover:text-white transition-colors">{brand.name}</Link>
             <ChevronSvg />
@@ -75,41 +76,39 @@ export default function ProductClient({
                     </h1>
 
                     <p className="text-gray-500 text-sm leading-relaxed mb-3 sm:mb-4">
-                      High-quality {product.name.toLowerCase()} from {brand.name}, designed for professional use in
-                      construction, industrial, and maintenance applications. Built to deliver reliable performance
-                      and durability.
+                      {t.productPage.highQuality} {product.name.toLowerCase()} {t.productPage.from} {brand.name}, {t.productPage.description}
                     </p>
 
                     <div className="bg-gray-50 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
-                      <h4 className="text-xs sm:text-sm font-bold text-gray-800 mb-2">Product Details</h4>
+                      <h4 className="text-xs sm:text-sm font-bold text-gray-800 mb-2">{t.productPage.productDetails}</h4>
                       <div className="grid grid-cols-2 gap-2 text-[11px] sm:text-xs">
-                        <div><span className="text-gray-400">Brand:</span> <span className="font-semibold text-gray-700">{brand.name}</span></div>
-                        <div><span className="text-gray-400">Category:</span> <span className="font-semibold text-gray-700">{category.name}</span></div>
-                        <div><span className="text-gray-400">Sector:</span> <span className="font-semibold text-gray-700">{brand.sectorLabel}</span></div>
-                        <div><span className="text-gray-400">Origin:</span> <span className="font-semibold text-gray-700">International</span></div>
+                        <div><span className="text-gray-400">{t.productPage.brand}</span> <span className="font-semibold text-gray-700">{brand.name}</span></div>
+                        <div><span className="text-gray-400">{t.productPage.category}</span> <span className="font-semibold text-gray-700">{category.name}</span></div>
+                        <div><span className="text-gray-400">{t.productPage.sector}</span> <span className="font-semibold text-gray-700">{brand.sectorLabel}</span></div>
+                        <div><span className="text-gray-400">{t.productPage.origin}</span> <span className="font-semibold text-gray-700">{t.productPage.international}</span></div>
                       </div>
                     </div>
 
                     <p className="text-gray-500 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6">
-                      Available for immediate supply across the UAE. Contact us for pricing, bulk orders, and technical specifications.
+                      {t.productPage.availableText}
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-3">
                       <a
-                        href={`https://wa.me/971543078535?text=Hi, I'm interested in ${product.name} from ${brand.name}. Please share details and pricing.`}
+                        href={`https://wa.me/971543078535?text=${encodeURIComponent(`${t.productPage.whatsAppMessage} ${product.name} ${t.productPage.from} ${brand.name}. ${t.productPage.whatsAppMessageSuffix}`)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 sm:py-3 bg-green-500 text-white font-semibold text-xs sm:text-sm rounded-xl hover:bg-green-600 transition-colors"
                       >
                         <WhatsAppIcon />
-                        WhatsApp Enquiry
+                        {t.productPage.whatsAppEnquiry}
                       </a>
                       <a
                         href="tel:+971543078535"
                         className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 sm:py-3 bg-accent text-white font-semibold text-xs sm:text-sm rounded-xl hover:bg-accent-light transition-colors"
                       >
                         <PhoneIcon />
-                        Call Now
+                        {t.productPage.callNow}
                       </a>
                     </div>
                   </div>
@@ -118,28 +117,28 @@ export default function ProductClient({
 
               <div className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
                 <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-1 sm:mb-2">
-                  Enquire About {product.name}
+                  {t.productPage.enquireAbout} {product.name}
                 </h3>
                 <p className="text-gray-500 text-xs sm:text-sm mb-4 sm:mb-6">
-                  Fill the form below and our team will get back to you with pricing and availability.
+                  {t.productPage.enquireDesc}
                 </p>
                 <form
-                  onSubmit={(e) => { e.preventDefault(); alert("Thank you! Your enquiry has been sent. We will contact you shortly."); (e.target as HTMLFormElement).reset(); }}
+                  onSubmit={(e) => { e.preventDefault(); alert(t.productPage.thankYou); (e.target as HTMLFormElement).reset(); }}
                   className="space-y-3 sm:space-y-4"
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                    <input type="text" placeholder="Your Name *" required className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-accent transition-colors" />
-                    <input type="email" placeholder="Email Address *" required className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-accent transition-colors" />
+                    <input type="text" placeholder={t.productPage.yourName} required className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-accent transition-colors" />
+                    <input type="email" placeholder={t.productPage.emailAddress} required className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-accent transition-colors" />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                    <input type="tel" placeholder="Phone Number *" required className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-accent transition-colors" />
-                    <input type="text" placeholder="Company Name" className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-accent transition-colors" />
+                    <input type="tel" placeholder={t.productPage.phoneNumber} required className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-accent transition-colors" />
+                    <input type="text" placeholder={t.productPage.companyName} className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-accent transition-colors" />
                   </div>
                   <input type="text" value={`${product.name} — ${brand.name}`} readOnly className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-red-50 border border-accent/20 rounded-xl text-xs sm:text-sm text-accent font-medium" />
-                  <textarea placeholder="Your requirements (quantity, specifications, etc.)" rows={4} className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-accent transition-colors resize-none" />
+                  <textarea placeholder={t.productPage.requirements} rows={4} className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-accent transition-colors resize-none" />
                   <button type="submit" className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 sm:px-8 py-2.5 sm:py-3 bg-accent text-white font-semibold text-xs sm:text-sm rounded-xl hover:bg-accent-light transition-colors">
                     <EmailIcon />
-                    Submit Enquiry
+                    {t.productPage.submitEnquiry}
                   </button>
                 </form>
               </div>
@@ -147,7 +146,7 @@ export default function ProductClient({
               {related.length > 0 && (
                 <div>
                   <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-4 sm:mb-5">
-                    More in {category.name}
+                    {t.productPage.moreIn} {category.name}
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5">
                     {related.slice(0, 6).map((sub) => (
@@ -162,7 +161,7 @@ export default function ProductClient({
                         <div className="p-3 sm:p-4">
                           <h4 className="font-bold text-gray-800 group-hover:text-accent transition-colors text-sm mb-1">{sub.name}</h4>
                           <div className="flex items-center gap-1 text-xs font-semibold text-accent group-hover:gap-2 transition-all">
-                            View Details
+                            {t.productPage.viewDetails}
                             <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                             </svg>

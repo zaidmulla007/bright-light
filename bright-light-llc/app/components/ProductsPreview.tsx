@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useLang } from "../context/LanguageContext";
 import { brands, getTotalSubs } from "../data/products";
 
 const sectorColors: Record<string, string> = {
@@ -11,15 +14,20 @@ const sectorColors: Record<string, string> = {
 const featured = brands.slice(0, 6);
 
 export default function ProductsPreview() {
+  const { t, n } = useLang();
+
   return (
-    <section className="py-10 sm:py-14 md:py-16 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-10 sm:py-14 md:py-16 relative">
+      {/* Background image */}
+      <div className="absolute inset-0 bg-[url('/bright-light-1.jpg')] bg-cover bg-center bg-fixed" />
+      <div className="absolute inset-0 bg-black/60" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-8 sm:mb-10">
-          <span className="text-accent font-bold text-xs tracking-widest uppercase">Our Catalog</span>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black mt-2">Our Products</h2>
+          <span className="text-accent font-bold text-xs tracking-widest uppercase">{t.productsPreview.label}</span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mt-2">{t.productsPreview.title}</h2>
           <div className="mt-4 mx-auto w-16 h-1 bg-accent rounded-full" />
-          <p className="mt-4 text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
-            Browse our extensive range of electrical products from 12+ trusted global brands.
+          <p className="mt-4 text-sm sm:text-base text-gray-300 max-w-2xl mx-auto">
+            {t.productsPreview.description}
           </p>
         </div>
 
@@ -49,8 +57,8 @@ export default function ProductsPreview() {
                   </div>
                 </div>
                 <div className="flex gap-2 text-xs text-gray-500 mb-3">
-                  <span className="bg-gray-100 px-2.5 py-1 rounded-full">{brand.categories.length} categories</span>
-                  <span className="bg-gray-100 px-2.5 py-1 rounded-full">{totalSubs} products</span>
+                  <span className="bg-gray-100 px-2.5 py-1 rounded-full">{n(brand.categories.length)} {t.productsPreview.categories}</span>
+                  <span className="bg-gray-100 px-2.5 py-1 rounded-full">{n(totalSubs)} {t.productsPreview.products}</span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {brand.categories.slice(0, 2).map((cat) => (
@@ -60,12 +68,12 @@ export default function ProductsPreview() {
                   ))}
                   {brand.categories.length > 2 && (
                     <span className="text-[10px] px-2 py-1 bg-gray-50 text-gray-600 rounded-full border border-gray-100">
-                      +{brand.categories.length - 2} more
+                      +{n(brand.categories.length - 2)} {t.productsPreview.more}
                     </span>
                   )}
                 </div>
                 <div className="mt-4 flex items-center gap-1 text-sm font-bold text-accent group-hover:gap-2 transition-all">
-                  View Products
+                  {t.productsPreview.viewProducts}
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                   </svg>
@@ -78,9 +86,9 @@ export default function ProductsPreview() {
         <div className="text-center mt-8">
           <Link
             href="/products"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-black text-white font-bold text-sm rounded-full hover:bg-accent transition-all shadow-lg hover:shadow-xl hover:scale-105 duration-300"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-accent text-white font-bold text-sm rounded-full hover:bg-white hover:text-accent transition-all shadow-lg hover:shadow-xl hover:scale-105 duration-300"
           >
-            Explore All Brands
+            {t.productsPreview.exploreAllBrands}
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
             </svg>

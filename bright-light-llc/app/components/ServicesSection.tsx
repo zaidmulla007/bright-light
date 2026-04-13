@@ -1,20 +1,35 @@
+"use client";
+
+import { useLang } from "../context/LanguageContext";
+
 export default function ServicesSection() {
+  const { t } = useLang();
+
+  const services = [
+    { icon: <LightBulbIcon />, title: t.services.service1Title, desc: t.services.service1Desc },
+    { icon: <PlugIcon />, title: t.services.service2Title, desc: t.services.service2Desc },
+    { icon: <CableIcon />, title: t.services.service3Title, desc: t.services.service3Desc },
+    { icon: <BoardIcon />, title: t.services.service4Title, desc: t.services.service4Desc },
+    { icon: <WrenchIcon />, title: t.services.service5Title, desc: t.services.service5Desc },
+    { icon: <TruckIcon />, title: t.services.service6Title, desc: t.services.service6Desc },
+  ];
+
   return (
-    <section id="services" className="py-10 sm:py-14 md:py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="services" className="py-10 sm:py-14 md:py-16 relative">
+      {/* Background image */}
+      <div className="absolute inset-0 bg-[url('/bright-light-2.jpg')] bg-cover bg-center bg-fixed" />
+      <div className="absolute inset-0 bg-black/60" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-8 sm:mb-10">
-          <span className="text-accent font-bold text-xs tracking-widest uppercase">What We Offer</span>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black mt-2">Our Services</h2>
+          <span className="text-accent font-bold text-xs tracking-widest uppercase">{t.services.label}</span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mt-2">{t.services.title}</h2>
           <div className="mt-4 mx-auto w-16 h-1 bg-accent rounded-full" />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
-          <ServiceCard icon={<LightBulbIcon />} title="Light Fittings" desc="Indoor and outdoor lighting products including LED panels, bulbs, downlights, and fixtures from Philips, OSRAM & more." index={0} />
-          <ServiceCard icon={<PlugIcon />} title="Electrical Accessories" desc="Switches, sockets, plugs, connectors, and a wide range of wiring accessories for residential and commercial use." index={1} />
-          <ServiceCard icon={<CableIcon />} title="Cables & Wiring" desc="High-quality cables, wires, and wiring accessories from RR Kabel for all types of electrical installations." index={2} />
-          <ServiceCard icon={<BoardIcon />} title="Switchgear & Distribution" desc="MCBs, RCCBs, distribution boards, and circuit protection from Schneider, ABB, and Hager." index={3} />
-          <ServiceCard icon={<WrenchIcon />} title="Tools & Equipment" desc="Electrical tools, tapes, cable management, and installation equipment from Max and other brands." index={4} />
-          <ServiceCard icon={<TruckIcon />} title="Bulk Supply" desc="Wholesale and bulk supply for contractors and large-scale projects across the UAE at competitive prices." index={5} />
+          {services.map((s, index) => (
+            <ServiceCard key={index} icon={s.icon} title={s.title} desc={s.desc} index={index} />
+          ))}
         </div>
       </div>
     </section>
@@ -22,7 +37,6 @@ export default function ServicesSection() {
 }
 
 function ServiceCard({ icon, title, desc, index }: { icon: React.ReactNode; title: string; desc: string; index: number }) {
-  // Alternate: even cards white with red top border, odd cards black
   const isBlack = index % 2 === 1;
   return (
     <div className={`rounded-2xl p-5 sm:p-6 md:p-7 transition group relative overflow-hidden ${
@@ -37,7 +51,6 @@ function ServiceCard({ icon, title, desc, index }: { icon: React.ReactNode; titl
       </div>
       <h3 className={`text-lg sm:text-xl font-bold mb-2 ${isBlack ? "text-white" : "text-black"}`}>{title}</h3>
       <p className={`text-sm leading-relaxed ${isBlack ? "text-gray-400" : "text-gray-600"}`}>{desc}</p>
-      {/* Red accent line at bottom */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
     </div>
   );

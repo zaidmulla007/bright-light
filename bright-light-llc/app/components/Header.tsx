@@ -3,15 +3,8 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { useLang } from "../context/LanguageContext";
 import { InstagramIcon, FacebookIcon, LinkedInIcon, TwitterIcon, YouTubeIcon, TikTokIcon } from "./Icons";
-
-const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/products", label: "Products" },
-  { href: "/services", label: "Services" },
-  { href: "/contact", label: "Contact" },
-];
 
 const socialLinks = [
   { icon: <InstagramIcon />, href: "https://www.instagram.com", label: "Instagram" },
@@ -25,6 +18,16 @@ const socialLinks = [
 export default function Header() {
   const [mobileMenu, setMobileMenu] = useState(false);
   const pathname = usePathname();
+  const { t, toggleLang, isArabic } = useLang();
+
+  const navLinks = [
+    { href: "/", label: t.nav.home },
+    { href: "/about", label: t.nav.about },
+    { href: "/products", label: t.nav.products },
+    { href: "/services", label: t.nav.services },
+    { href: "/blog", label: t.nav.blog },
+    { href: "/contact", label: t.nav.contact },
+  ];
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -38,14 +41,14 @@ export default function Header() {
         <a href="/" className="flex items-center gap-1.5 sm:gap-2 md:gap-3 shrink-0">
           <Image
             src="/bright-light-logo-removebg-preview.png"
-            alt="Bright Light LLC"
+            alt={`${t.nav.brandName} ${t.nav.brandSuffix}`}
             width={48}
             height={32}
             className="h-11 sm:h-12 md:h-13 w-auto rounded-md sm:rounded-lg"
           />
           <div className="flex flex-col leading-tight">
-            <span className="font-extrabold tracking-wider text-base sm:text-lg md:text-xl text-black">BRIGHT LIGHT</span>
-            <span className="font-bold tracking-wide text-[9px] sm:text-[10px] md:text-xs text-accent uppercase">LLC</span>
+            <span className="font-extrabold tracking-wider text-base sm:text-lg md:text-xl text-black">{t.nav.brandName}</span>
+            <span className="font-bold tracking-wide text-[9px] sm:text-[10px] md:text-xs text-accent uppercase">{t.nav.brandSuffix}</span>
           </div>
         </a>
 
@@ -66,31 +69,48 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Desktop Social Icons */}
+        {/* Desktop Social Icons + Language Toggle */}
         <div className="hidden lg:flex items-center gap-2 xl:gap-3">
           {socialLinks.map((s, i) => (
             <a key={i} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="text-gray-500 hover:text-accent transition">
               {s.icon}
             </a>
           ))}
+          <button
+            onClick={toggleLang}
+            className="flex items-center gap-1.5 border border-accent/30 text-accent px-2.5 py-1.5 text-xs font-semibold tracking-wider uppercase hover:bg-red-50 hover:border-accent transition-all duration-300 rounded-md ms-2"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 003 12c0-1.605.42-3.113 1.157-4.418" />
+            </svg>
+            {t.langSwitch}
+          </button>
         </div>
 
         {/* Mobile/Tablet Menu Button */}
-        <button
-          onClick={() => setMobileMenu(!mobileMenu)}
-          className="lg:hidden p-1.5 sm:p-2 hover:bg-red-50 rounded-lg transition"
-          aria-label="Toggle menu"
-        >
-          {mobileMenu ? (
-            <svg className="w-5 h-5 sm:w-6 sm:h-6 text-accent" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          ) : (
-            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            </svg>
-          )}
-        </button>
+        <div className="lg:hidden flex items-center gap-2">
+          <button
+            onClick={toggleLang}
+            className="p-1.5 sm:p-2 border border-accent/30 text-accent text-[10px] sm:text-xs font-bold rounded-md hover:bg-red-50 transition"
+          >
+            {t.langSwitch}
+          </button>
+          <button
+            onClick={() => setMobileMenu(!mobileMenu)}
+            className="p-1.5 sm:p-2 hover:bg-red-50 rounded-lg transition"
+            aria-label={t.nav.toggleMenu}
+          >
+            {mobileMenu ? (
+              <svg className="w-5 h-5 sm:w-6 sm:h-6 text-accent" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Mobile/Tablet Menu Dropdown */}

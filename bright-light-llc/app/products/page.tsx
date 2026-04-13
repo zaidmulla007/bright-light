@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useLang } from "../context/LanguageContext";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ProductSidebar from "../components/ProductSidebar";
@@ -14,21 +15,23 @@ const sectorColors: Record<string, string> = {
 };
 
 export default function ProductsPage() {
+  const { t, n } = useLang();
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
 
-      <section className="bg-accent py-8 sm:py-10 md:py-14 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#8B0000] to-accent" />
+      <section className="py-8 sm:py-10 md:py-14 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/bright-light-llc4.jpg')] bg-cover bg-center" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center relative z-10">
           <div className="flex items-center justify-center gap-2 text-white/70 text-xs sm:text-sm mb-3 sm:mb-4">
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <Link href="/" className="hover:text-white transition-colors">{t.nav.home}</Link>
             <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
-            <span className="text-white font-semibold">Products</span>
+            <span className="text-white font-semibold">{t.productsPage.breadcrumb}</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">Our Products</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">{t.productsPage.title}</h1>
           <p className="mt-3 sm:mt-4 text-white/70 max-w-2xl mx-auto text-sm sm:text-base">
-            Browse our complete range of light fittings, electrical accessories, cables, and switchgear from 12+ trusted global brands.
+            {t.productsPage.description}
           </p>
         </div>
       </section>
@@ -63,8 +66,8 @@ export default function ProductsPage() {
                       </div>
 
                       <div className="flex gap-2 text-xs text-gray-500 mb-3">
-                        <span className="bg-gray-50 px-2 py-0.5 rounded">{brand.categories.length} categories</span>
-                        <span className="bg-gray-50 px-2 py-0.5 rounded">{totalSubs} products</span>
+                        <span className="bg-gray-50 px-2 py-0.5 rounded">{n(brand.categories.length)} {t.productsPage.categories}</span>
+                        <span className="bg-gray-50 px-2 py-0.5 rounded">{n(totalSubs)} {t.productsPage.products}</span>
                       </div>
 
                       <div className="flex flex-wrap gap-1 mb-3">
@@ -75,13 +78,13 @@ export default function ProductsPage() {
                         ))}
                         {brand.categories.length > 3 && (
                           <span className="text-[10px] px-2 py-1 bg-gray-50 text-gray-600 rounded-full">
-                            +{brand.categories.length - 3} more
+                            +{n(brand.categories.length - 3)} {t.productsPage.more}
                           </span>
                         )}
                       </div>
 
                       <div className="flex items-center gap-1 text-xs font-semibold text-accent group-hover:gap-2 transition-all">
-                        View Products
+                        {t.productsPage.viewProducts}
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                         </svg>

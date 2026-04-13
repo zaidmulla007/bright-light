@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useLang } from "../context/LanguageContext";
 import { brands } from "../data/products";
 
 interface Props {
@@ -14,6 +15,7 @@ export default function ProductSidebar({ activeBrand, activeCategory }: Props) {
   const [expandedBrands, setExpandedBrands] = useState<string[]>(
     activeBrand ? [activeBrand] : []
   );
+  const { t } = useLang();
 
   const toggleBrand = (slug: string) => {
     setExpandedBrands((prev) =>
@@ -34,7 +36,7 @@ export default function ProductSidebar({ activeBrand, activeCategory }: Props) {
     <aside className="w-full lg:w-72 shrink-0">
       <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden lg:sticky lg:top-20">
         <div className="bg-primary p-3 sm:p-4">
-          <h3 className="text-white font-bold text-sm">Browse by Brand</h3>
+          <h3 className="text-white font-bold text-sm">{t.sidebar.browseByBrand}</h3>
         </div>
 
         <div className="p-3 border-b border-gray-100">
@@ -44,7 +46,7 @@ export default function ProductSidebar({ activeBrand, activeCategory }: Props) {
             </svg>
             <input
               type="text"
-              placeholder="Search brands..."
+              placeholder={t.sidebar.searchBrands}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-8 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:border-accent transition"

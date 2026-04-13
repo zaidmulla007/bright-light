@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useLang } from "../context/LanguageContext";
 import { EmailIcon, WhatsAppIcon, PhoneIcon, FaxIcon, InstagramIcon, FacebookIcon, LinkedInIcon, TwitterIcon, YouTubeIcon, TikTokIcon, LocationIcon } from "./Icons";
 
 const socialLinks = [
@@ -12,6 +15,16 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const { t } = useLang();
+
+  const quickLinks = [
+    { href: "/", label: t.footer.home },
+    { href: "/about", label: t.footer.aboutUs },
+    { href: "/products", label: t.footer.products },
+    { href: "/services", label: t.footer.services },
+    { href: "/contact", label: t.footer.contactUs },
+  ];
+
   return (
     <footer className="bg-accent text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
@@ -22,18 +35,18 @@ export default function Footer() {
             <div className="flex items-center gap-2 sm:gap-3">
               <Image
                 src="/bright-light-logo.png"
-                alt="Bright Light LLC"
+                alt={`${t.footer.brandName} ${t.footer.brandSuffix}`}
                 width={48}
                 height={32}
                 className="h-9 sm:h-10 md:h-12 w-auto rounded-lg"
               />
               <div className="flex flex-col leading-tight">
-                <span className="font-extrabold tracking-wider text-sm sm:text-base md:text-lg text-white">BRIGHT LIGHT</span>
-                <span className="font-bold tracking-wide text-[8px] sm:text-[9px] md:text-xs text-white/70 uppercase">LLC</span>
+                <span className="font-extrabold tracking-wider text-sm sm:text-base md:text-lg text-white">{t.footer.brandName}</span>
+                <span className="font-bold tracking-wide text-[8px] sm:text-[9px] md:text-xs text-white/70 uppercase">{t.footer.brandSuffix}</span>
               </div>
             </div>
             <p className="mt-3 sm:mt-4 text-white/70 text-xs sm:text-sm leading-relaxed max-w-md">
-              Dealers in light fittings and all kinds of electrical accessories. Your trusted supplier in Deira, Dubai, UAE since establishment.
+              {t.footer.description}
             </p>
             <div className="flex flex-wrap gap-2 sm:gap-3 mt-4 sm:mt-5">
               {socialLinks.map((s, i) => (
@@ -46,15 +59,9 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-bold text-sm sm:text-base mb-3 sm:mb-4 text-white">Quick Links</h4>
+            <h4 className="font-bold text-sm sm:text-base mb-3 sm:mb-4 text-white">{t.footer.quickLinks}</h4>
             <ul className="space-y-2 sm:space-y-2.5">
-              {[
-                { href: "/", label: "Home" },
-                { href: "/about", label: "About Us" },
-                { href: "/products", label: "Products" },
-                { href: "/services", label: "Services" },
-                { href: "/contact", label: "Contact Us" },
-              ].map((link) => (
+              {quickLinks.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-white/70 hover:text-white text-xs sm:text-sm transition flex items-center gap-1.5">
                     <svg className="w-3 h-3 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -69,7 +76,7 @@ export default function Footer() {
 
           {/* Top Brands */}
           <div>
-            <h4 className="font-bold text-sm sm:text-base mb-3 sm:mb-4 text-white">Top Brands</h4>
+            <h4 className="font-bold text-sm sm:text-base mb-3 sm:mb-4 text-white">{t.footer.topBrands}</h4>
             <ul className="space-y-2 sm:space-y-2.5">
               {[
                 { href: "/products/philips-lighting", label: "Philips Lighting" },
@@ -93,34 +100,34 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="font-bold text-sm sm:text-base mb-3 sm:mb-4 text-white">Contact Us</h4>
+            <h4 className="font-bold text-sm sm:text-base mb-3 sm:mb-4 text-white">{t.footer.contactUs}</h4>
             <ul className="space-y-3 sm:space-y-4">
               <li className="flex items-start gap-2 sm:gap-2.5">
                 <span className="text-white/60 mt-0.5 shrink-0"><PhoneIcon /></span>
                 <div>
-                  <p className="text-[9px] sm:text-[10px] text-white/40 uppercase tracking-wider">Mobile / WhatsApp</p>
+                  <p className="text-[9px] sm:text-[10px] text-white/40 uppercase tracking-wider">{t.footer.mobileWhatsApp}</p>
                   <a href="tel:+971543078535" className="text-xs sm:text-sm text-white/70 hover:text-white transition">+971 54 307 8535</a>
                 </div>
               </li>
               <li className="flex items-start gap-2 sm:gap-2.5">
                 <span className="text-white/60 mt-0.5 shrink-0"><PhoneIcon /></span>
                 <div>
-                  <p className="text-[9px] sm:text-[10px] text-white/40 uppercase tracking-wider">Telephone</p>
+                  <p className="text-[9px] sm:text-[10px] text-white/40 uppercase tracking-wider">{t.footer.telephone}</p>
                   <a href="tel:+97142986940" className="text-xs sm:text-sm text-white/70 hover:text-white transition">+971 4 298 69 40</a>
                 </div>
               </li>
               <li className="flex items-start gap-2 sm:gap-2.5">
                 <span className="text-white/60 mt-0.5 shrink-0"><EmailIcon /></span>
                 <div>
-                  <p className="text-[9px] sm:text-[10px] text-white/40 uppercase tracking-wider">Email</p>
+                  <p className="text-[9px] sm:text-[10px] text-white/40 uppercase tracking-wider">{t.footer.email}</p>
                   <a href="mailto:jayprakash@brightlight.ae" className="text-xs sm:text-sm text-white/70 hover:text-white transition break-all">jayprakash@brightlight.ae</a>
                 </div>
               </li>
               <li className="flex items-start gap-2 sm:gap-2.5">
                 <span className="text-white/60 mt-0.5 shrink-0"><LocationIcon /></span>
                 <div>
-                  <p className="text-[9px] sm:text-[10px] text-white/40 uppercase tracking-wider">Address</p>
-                  <p className="text-xs sm:text-sm text-white/70">P.O.Box: 380195, Deira<br />Dubai - U.A.E.</p>
+                  <p className="text-[9px] sm:text-[10px] text-white/40 uppercase tracking-wider">{t.footer.address}</p>
+                  <p className="text-xs sm:text-sm text-white/70">{t.footer.addressLine1}<br />{t.footer.addressLine2}</p>
                 </div>
               </li>
             </ul>
@@ -132,7 +139,7 @@ export default function Footer() {
       <div className="bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 md:py-5 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3">
           <p className="text-white text-[10px] sm:text-xs text-center sm:text-left">
-            &copy; {new Date().getFullYear()} Bright Light LLC. All rights reserved. Powered by{" "}
+            &copy; {new Date().getFullYear()} {t.footer.copyright}{" "}
             <a href="https://zetacoding.com" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-semibold">ZetaCoding</a>
           </p>
           <div className="flex gap-3 sm:gap-4">

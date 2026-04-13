@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { useLang } from "@/app/context/LanguageContext";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import ProductSidebar from "@/app/components/ProductSidebar";
@@ -12,6 +13,7 @@ export default function BrandClient({ brandSlug }: { brandSlug: string }) {
   if (!brand) return notFound();
 
   const totalProducts = getTotalSubs(brand);
+  const { t, n } = useLang();
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -20,9 +22,9 @@ export default function BrandClient({ brandSlug }: { brandSlug: string }) {
       <section className="bg-gradient-to-br from-[#8B0000] via-accent to-[#8B0000] py-8 sm:py-10 md:py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-2 text-white/60 text-xs sm:text-sm mb-3 sm:mb-4 flex-wrap">
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <Link href="/" className="hover:text-white transition-colors">{t.nav.home}</Link>
             <ChevronSvg />
-            <Link href="/products" className="hover:text-white transition-colors">Products</Link>
+            <Link href="/products" className="hover:text-white transition-colors">{t.nav.products}</Link>
             <ChevronSvg />
             <span className="text-white">{brand.name}</span>
           </div>
@@ -33,7 +35,7 @@ export default function BrandClient({ brandSlug }: { brandSlug: string }) {
             <div>
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">{brand.name}</h1>
               <p className="text-white/60 text-xs sm:text-sm mt-1">
-                {totalProducts} products &middot; {brand.categories.length} categories &middot; {brand.sectorLabel}
+                {n(totalProducts)} {t.brandPage.products} &middot; {n(brand.categories.length)} {t.brandPage.categories} &middot; {brand.sectorLabel}
               </p>
             </div>
           </div>
@@ -54,7 +56,7 @@ export default function BrandClient({ brandSlug }: { brandSlug: string }) {
                     href={`#${cat.slug}`}
                     className="text-xs px-3 sm:px-4 py-1.5 sm:py-2 bg-white border border-gray-200 rounded-full text-gray-600 hover:border-accent/40 hover:text-accent hover:bg-red-50/50 transition-all font-medium"
                   >
-                    {cat.name} ({cat.subs.length})
+                    {cat.name} ({n(cat.subs.length)})
                   </a>
                 ))}
               </div>
@@ -65,7 +67,7 @@ export default function BrandClient({ brandSlug }: { brandSlug: string }) {
                     <h2 className="text-base sm:text-lg font-bold text-gray-800">{cat.name}</h2>
                     <div className="flex-1 h-px bg-gray-200" />
                     <span className="text-[10px] sm:text-xs text-gray-500 bg-white px-2 sm:px-3 py-1 rounded-full border border-gray-200">
-                      {cat.subs.length} products
+                      {n(cat.subs.length)} {t.brandPage.products}
                     </span>
                   </div>
 
@@ -94,7 +96,7 @@ export default function BrandClient({ brandSlug }: { brandSlug: string }) {
                             {cat.name} — {brand.name}
                           </p>
                           <div className="flex items-center gap-1 text-xs font-semibold text-accent group-hover:gap-2 transition-all">
-                            View Details
+                            {t.brandPage.viewDetails}
                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                             </svg>
